@@ -33,7 +33,7 @@ RUN chown -R xrootd:xrootd /etc/xrootd
 
 COPY run_stashcache.sh /
 RUN chmod 775 /run_stashcache.sh
-# CMD ["/run_stashcache.sh"]
+CMD ["/run_stashcache.sh"]
 
 # COPY run_condor.sh /
 # RUN chmod 775 /run_condor.sh
