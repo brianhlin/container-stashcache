@@ -1,0 +1,61 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: stashcache-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: stashcache
+  ports:
+  - port: 1094
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: stashcache-deployment
+  labels:
+    app: stashcache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stashcache
+  template:
+    metadata:
+      labels:
+        app: stashcache
+    spec:
+      volumes:
+      - name: stashcache-nfs-storage
+        persistentVolumeClaim:
+          claimName: stashcache-nfs-claim
+      containers:
+      - name: stashcache
+        image: slateci/stashcache
+        command: ["/run_stashcache.sh"]
+        env:
+        - name: STASHCACHE_SPACE_HIGH_WM
+          value: "0.95"
+        - name: STASHCACHE_SPACE_LOW_WM
+          value: "0.80"
+        - name: STASHCACHE_RAMSIZE
+          value: "8g"
+        - name: STASHCACHE_BLOCKSIZE
+          value: "1M"
+        - name: STASHCACHE_PREFETCH
+          value: "0"
+        - name: STASHCACHE_SITE_NAME
+          value: "stashcache_"
+        - name: STASHCACHE_MONITORING_ENDPOINT
+          value: "http://test"
+        volumeMounts:
+        - mountPath: "/stash"
+          name: stashcache-nfs-storage
+          readOnly: false
+        livenessProbe:
+          tcpSocket:
+            port: 1094
+          initialDelaySeconds: 180
+          periodSeconds: 60
+        ports:
+        - containerPort: 1094
