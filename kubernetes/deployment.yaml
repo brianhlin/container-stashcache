@@ -12,6 +12,10 @@ spec:
         app: stashcache-cache
     spec:
       containers:
-      - name: stashcache
-        image: slateci/stashcache:latest
-
+        - name: stashcache-cache
+          image: slateci/stashcache:latest
+          ports:
+            - containerPort: 1094
+      volumes:
+        - name: stashcache-data
+          emptydir: {}
