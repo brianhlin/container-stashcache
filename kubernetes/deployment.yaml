@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stashcache-cache-deployment
+spec:
+  selector:
+    matchLabels:
+      app: stashcache-cache
+  template:
+    metadata:
+      labels:
+        app: stashcache-cache
+    spec:
+      containers:
+      - name: stashcache
+        image: slateci/stashcache:latest
+
