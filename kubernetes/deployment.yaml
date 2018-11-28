@@ -16,6 +16,21 @@ spec:
           image: slateci/stashcache:latest
           ports:
             - containerPort: 1094
+          env:
+            - name: STASHCACHE_SPACE_HIGH_WM
+              value: "0.95"
+            - name: STASHCACHE_SPACE_LOW_WM
+              value: "0.80"
+            - name: STASHCACHE_RAMSIZE
+              value: "1G"
+            - name: STASHCACHE_BLOCKSIZE
+              value: "1M"
+            - name: STASHCACHE_PREFETCH
+              value: "0"
+            - name: STASHCACHE_SITE_NAME
+              value: "stashcache"
+            - name: STASHCACHE_MONITORING_ENDPOINT
+              value: "uct2-collectd.mwt2.org"
       volumes:
         - name: stashcache-data
           emptyDir: {}
