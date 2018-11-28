@@ -31,6 +31,10 @@ spec:
               value: "stashcache"
             - name: STASHCACHE_MONITORING_ENDPOINT
               value: "uct2-collectd.mwt2.org"
+          volumeMounts:
+        - mountPath: "/stash"
+          name: stashcache-data
+          readOnly: false
       volumes:
         - name: stashcache-data
           emptyDir: {}
